@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<a href="{% url 'add_company' %}" class="btn btn-primary d-block mb-4 add-company-btn">Ajouter une entreprise</a>
+
+
+  <!-- Tableau des entreprises -->
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Date d'ajout</th>
+          <th>@</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for company in companies %}
+        <tr>
+          <td>{{ company.name }}</td>
+          <td>{{ company.date_added }}</td>
+          <td><i class="bi bi-at"></i></td>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#companyModal{{ company.id }}">
+              Voir plus
+            </button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise?')) {
+                window.location.href = '{% url 'company_delete' company.pk %}';
+                 }">
+              Supprimer
+            </button>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+<!-- Modals pour chaque entreprise -->
+{% for company in companies %}
+<div class="modal fade" id="companyModal{{ company.id }}" tabindex="-1" aria-labelledby="companyModal{{ company.id }}Label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModal{{ company.id }}Label">{{ company.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Site web</label>
+              <a href="{{ company.website }}">{{ company.website }}</a>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Adresse email</label>
+              <p>{{ company.email_address }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Adresse physique</label>
+              <p>{{ company.physical_address }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Personne à contacter</label>
+              <p>{{ company.contact_name }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Site web des offres d'emploi</label>
+              <a href="{{ company.job_listing_site }}">{{ company.job_listing_site }}</a>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              {% if company.notes.exists %}
+              <ul>
+                {% for note in company.notes.all %}
+                  <li>
+                    {{ note.text }}
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#noteModal{{ note.id }}">Modifier</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteNoteModal{{ note.id }}">Supprimer</button>
+                  </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,177 @@
+/* Variables */
+:root {
+  --primary-color: #72bf44;
+  --secondary-color: #2d2d2d;
+}
+
+/* Corps de la page */
+body {
+  background-color: var(--secondary-color);
+}
+
+/* Navigation */
+.navbar {
+  background-color: var(--primary-color) !important;
+}
+
+.nav-link {
+  color: var(--secondary-color) !important;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Cards */
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 18px;
+}
+
+.card-link {
+  font-weight: bold;
+  color: var(--secondary-color) !important;
+}
+
+.card-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Boutons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #8bc34a;
+  border-color: #8bc34a;
+}
+
+/* Centre le tableau */
+.table-responsive {
+  margin: 50px auto;
+  max-width: 80%;
+}
+
+/* Tableau */
+.table {
+  color: #fff;
+  background-color: #000;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table thead th {
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.table tbody td:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.table tbody td:last-child a {
+  color: var(--primary-color);
+}
+
+.table tbody td:last-child a:hover {
+  color: #8bc34a;
+}
+
+.table tbody td:last-child a.add-btn:hover {
+  color: #8bc34a;
+}
+
+.add-company-btn {
+display: block;
+margin-bottom: 20px;
+background-color: #72bf44;
+color: white;
+border: none;
+border-radius: 5px;
+padding: 10px 20px;
+font-size: 18px;
+font-weight: bold;
+position: absolute;
+top: 100px;
+left: 50%;
+transform: translateX(-50%);
+}
+
+.table-responsive {
+  margin-top: 150px;
+}
+
+ /* Formulaire */
+  .add-company-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 50px auto;
+  }
+
+  /* Titre */
+  .add-company-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  /* Champs de formulaire */
+  .add-company-form label {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .add-company-form input,
+  .add-company-form select,
+  .add-company-form textarea {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Bouton de soumission */
+  .add-company-form button {
+    display: block;
+    margin-top: 20px;
+    background-color: #72bf44;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .add-company-form button:hover {
+    background-color: #8bc34a;
+  }
