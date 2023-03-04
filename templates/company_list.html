@@ -1,47 +1,49 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-<a href="{% url 'add_company' %}" class="btn btn-primary d-block mb-4 add-company-btn">Ajouter une entreprise</a>
+  <a href="{% url 'add_company' %}" class="btn btn-primary d-block mb-4 add-company-btn">Ajouter une entreprise</a>
 
+<!-- Tableau des entreprises -->
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Date d'ajout</th>
+        <th>@</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for company in companies %}
+      <tr>
+        <td>{{ company.name }}</td>
+        <td>{{ company.formatted_created_at }}</td>
+        <td><i class="bi bi-at"></i></td>
+        <td>
+          <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#companyModal{{ company.id }}">
+            Voir plus
+          </button>
+          <a href="{% url 'company_update' company.id %}" class="btn btn-sm btn-warning">Modifier</a>
+          <button type="button" class="btn btn-sm btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise?')) {
+              window.location.href = '{% url 'company_delete' company.pk %}';
+               }">
+            Supprimer
+          </button>
 
-  <!-- Tableau des entreprises -->
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Date d'ajout</th>
-          <th>@</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for company in companies %}
-        <tr>
-          <td>{{ company.name }}</td>
-          <td>{{ company.date_added }}</td>
-          <td><i class="bi bi-at"></i></td>
-          <td>
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#companyModal{{ company.id }}">
-              Voir plus
-            </button>
-            <button type="button" class="btn btn-sm btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise?')) {
-                window.location.href = '{% url 'company_delete' company.pk %}';
-                 }">
-              Supprimer
-            </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
 
 <!-- Modals pour chaque entreprise -->
 {% for company in companies %}
+
 <div class="modal fade" id="companyModal{{ company.id }}" tabindex="-1" aria-labelledby="companyModal{{ company.id }}Label" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -87,6 +89,14 @@
                 {% endfor %}
               </ul>
               {% endif %}
+              <form method="POST" action="{% url 'add_note' company.id %}" class="mt-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label class="form-label" for="note">Ajouter une note</label>
+                  <textarea class="form-control" id="note" name="text" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter la note</button>
+              </form>
             </div>
           </div>
         </div>

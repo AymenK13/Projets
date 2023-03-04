@@ -1,30 +1,42 @@
 from django.db import models
 from django.core.validators import EmailValidator
-
-class Company(models.Model):
-    """Modèle pour représenter une entreprise."""
-
-    name = models.CharField(max_length=100, verbose_name="Nom de l'entreprise")
-    website = models.URLField(blank=True, verbose_name="Site web de l'entreprise")
-    email_address = models.EmailField(blank=True, null=True, verbose_name="Adresse email de l'entreprise", validators=[EmailValidator(message="L'adresse email n'est pas valide.")])
-    physical_address = models.CharField(max_length=100, blank=True, verbose_name="Adresse physique de l'entreprise")
-    contact_name = models.CharField(max_length=100, blank=True, verbose_name="Nom de la personne à contacter")
-    job_listing_site = models.URLField(blank=True, verbose_name="Site web des offres d'emploi")
-    notes = models.CharField(max_length=500, blank=True, verbose_name="Notes sur l'entreprise")  # champ de notes
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
-
-
-    def __str__(self):
-        """Retourne une représentation en chaîne de caractères de l'objet Company."""
-        return self.name
+from django.utils import timezone
 
 
 class Note(models.Model):
-    """Modèle pour représenter une note."""
+    """Model for representing a note."""
 
-    text = models.TextField(verbose_name="Texte de la note")  # Texte de la note (obligatoire)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création de la note")  # Date de création de la note
+    text = models.TextField(verbose_name="Text of the note")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date of creation of the note")
 
     def __str__(self):
-        """Retourne une représentation en chaîne de caractères de l'objet Note."""
+        """Return a string representation of the Note object."""
         return self.text
+
+
+class Company(models.Model):
+    """Model for representing a company."""
+
+    name = models.CharField(max_length=100, verbose_name="Name of the company")
+    website = models.URLField(blank=True, verbose_name="Website of the company")
+    email_address = models.EmailField(blank=True, null=True, verbose_name="Email address of the company", validators=[EmailValidator(message="The email address is not valid.")])
+    physical_address = models.CharField(max_length=100, blank=True, verbose_name="Physical address of the company")
+    contact_name = models.CharField(max_length=100, blank=True, verbose_name="Name of the contact person")
+    job_listing_site = models.URLField(blank=True, verbose_name="Job listing website")
+    notes = models.ManyToManyField(Note, blank=True, verbose_name="Notes about the company")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date of creation")
+
+    def __str__(self):
+        """Return a string representation of the Company object."""
+        return self.name
+
+    def formatted_created_at(self):
+        """Return the formatted creation date of the Company object."""
+        return timezone.localtime(self.created_at).strftime('%d/%m/%y %H:%M')
+
+
+class JobPosting(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    location = models.CharField(max_length=100)
+    date_posted = models.DateTimeField(auto_now_add=True)

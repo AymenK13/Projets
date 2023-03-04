@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DeleteView
-from .forms import CompanyForm
-from .models import Company, Note
+from .forms import CompanyForm, NoteForm
+from .models import Company, JobPosting
 from django.urls import reverse_lazy
 
 
@@ -77,7 +77,6 @@ def add_note(request, company_id):
     return render(request, 'add_note.html', context)
 
 
-
 class CompanyDeleteView(DeleteView):
     """View pour supprimer une entreprise.
 
@@ -91,3 +90,78 @@ class CompanyDeleteView(DeleteView):
     model = Company
     template_name = 'company_confirm_delete.html'
     success_url = reverse_lazy('company_list')
+
+
+def edit_company(request, pk):
+    """
+    View pour modifier une entreprise existante dans l'annuaire.
+
+    Utilise un formulaire pré-rempli pour modifier un objet Company dans la base de données.
+    Si la requête est de type POST et que le formulaire est valide, l'entreprise est enregistrée dans la base de données
+    et l'utilisateur est redirigé vers la page de liste des entreprises.
+
+    Sinon, le formulaire pré-rempli est affiché.
+
+    Args:
+        request: La requête HTTP.
+        pk: La clé primaire de l'entreprise à modifier.
+
+    Returns:
+        La page HTML pour modifier une entreprise.
+    """
+    company = get_object_or_404(Company, pk=pk)
+    if request.method == 'POST':
+        form = CompanyForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('company_list')
+    else:
+        form = CompanyForm(instance=company)
+
+    context = {
+        'form': form,
+        'company': company,
+    }
+
+    return render(request, 'edit_company.html', context)
+
+
+def company_update(request, pk):
+    company = get_object_or_404(Company, pk=pk)
+    if request.method == 'POST':
+        form = CompanyForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('company_list')  # rediriger vers la vue company_detail
+    else:
+        form = CompanyForm(instance=company)
+    return render(request, 'company_update.html', {'form': form, 'company': company})
+
+
+def add_note(request, company_id):
+    if request.method == 'POST':
+        note_form = NoteForm(request.POST)
+        if note_form.is_valid():
+            company = Company.objects.get(id=company_id)
+            note = note_form.save()
+            company.notes.create(text=note.text)
+            return redirect('company_list')
+    else:
+        note_form = NoteForm()
+
+    context = {
+        'note_form': note_form,
+    }
+
+    return render(request, 'add_note.html', context)
+
+
+def annonces(request):
+    return render(request, 'annonces.html')
+
+
+
+def job_posting_list(request):
+    job_postings = JobPosting.objects.all().order_by('-date_posted')
+    context = {'job_postings': job_postings}
+    return render(request, 'job_posting_list.html', context)
