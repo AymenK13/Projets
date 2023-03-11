@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
+         {% for annonce in annonces %}
+         <div class="col">
+        <div class="card card-custom h-100 gradient-bg bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title"><strong>{{ annonce.job_title }}</strong></h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><em>{{ annonce.company.name }}</em></h6>
+                            <p class="card-text"     {{ annonce.job_location }}</p>
+                            {% if user.is_authenticated %}
+                                <button class="btn btn-sm btn-outline-primary mark-favorite" data-job-id="{{ annonce.id }}" style="border: 1px solid black;">
+                                    {% if annonce.is_favorite %}
+                                        <i class="bi bi-heart-fill"></i>
+                                    {% else %}
+                                        <i class="bi bi-heart"></i>
+                                    {% endif %}
+                                </button>
+                            {% endif %}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annonce{{ annonce.id }}">
+                                Voir plus
+                            </button>
+                            <form method="POST" action="{% url 'delete_job_ad' pk=annonce.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="annonce{{ annonce.id }}" tabindex="-1" aria-labelledby="annonce{{ annonce.id }}Label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="annonce{{ annonce.id }}Label">{{ annonce.job_title }} chez {{ annonce.company.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{ annonce.job_description }}</p>
+            <p><strong>Lieu:</strong> {{ annonce.job_location }}</p>
+            <p><strong>Type:</strong> {{ annonce.job_type }}</p>
+            <p><strong>Site:</strong> {{ annonce.job_site }}</p>
+            <p><strong>Date d'ajout:</strong> {{ annonce.date_added|date:"d/m/Y" }}</p>
+          </div>
+            <form method="POST" action="{% url 'update_contact_status' pk=annonce.pk %}">
+    {           % csrf_token %}
+                 <div class="form-check">
+                    <input class="form-check-input" type="radio" name="contacted" id="not_contacted" value="false" {% if not annonce.contact_date %}checked{% endif %}>
+                        <label class="form-check-label" for="not_contacted">
+                         Pas encore contacté
+                     </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="contacted" id="contacted" value="true" {% if annonce.contact_date %}checked{% endif %}>
+                        <label class="form-check-label" for="contacted">
+                        Contacté le
+                        </label>
+                    <input type="date" class="form-control" id="contact_date" name="contact_date" {% if not annonce.contact_date %}disabled{% endif %} value="{% if annonce.contact_date %}{{ annonce.contact_date }}{% endif %}">
+                </div>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+            </form>
+div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% empty %}
+    <p>Aucune annonce trouvée.</p>
+    {% endfor %}
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="add-annonce-btn-container text-center">
+    <a href="{% url 'add_job_ad' %}" class="btn btn-primary">Ajouter une annonce</a>
+</div>
+
+</div>
+{% endblock %}
