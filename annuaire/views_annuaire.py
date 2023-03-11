@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DeleteView
 from .forms import CompanyForm, NoteForm
-from .models import Company, JobPosting
+from .models import Company, Note
 from django.urls import reverse_lazy
 
 
@@ -57,26 +57,6 @@ def home(request):
     return render(request, 'index.html')
 
 
-def add_note(request, company_id):
-    company = Company.objects.get(id=company_id)
-
-    if request.method == 'POST':
-        form = NoteForm(request.POST)
-        if form.is_valid():
-            note = form.save()
-            company.notes.add(note)
-            return redirect('company_list')
-    else:
-        form = NoteForm()
-
-    context = {
-        'company': company,
-        'form': form,
-    }
-
-    return render(request, 'add_note.html', context)
-
-
 class CompanyDeleteView(DeleteView):
     """View pour supprimer une entreprise.
 
@@ -126,18 +106,6 @@ def edit_company(request, pk):
     return render(request, 'edit_company.html', context)
 
 
-def company_update(request, pk):
-    company = get_object_or_404(Company, pk=pk)
-    if request.method == 'POST':
-        form = CompanyForm(request.POST, instance=company)
-        if form.is_valid():
-            form.save()
-            return redirect('company_list')  # rediriger vers la vue company_detail
-    else:
-        form = CompanyForm(instance=company)
-    return render(request, 'company_update.html', {'form': form, 'company': company})
-
-
 def add_note(request, company_id):
     if request.method == 'POST':
         note_form = NoteForm(request.POST)
@@ -154,14 +122,3 @@ def add_note(request, company_id):
     }
 
     return render(request, 'add_note.html', context)
-
-
-def annonces(request):
-    return render(request, 'annonces.html')
-
-
-
-def job_posting_list(request):
-    job_postings = JobPosting.objects.all().order_by('-date_posted')
-    context = {'job_postings': job_postings}
-    return render(request, 'job_posting_list.html', context)

@@ -26,7 +26,7 @@
           <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#companyModal{{ company.id }}">
             Voir plus
           </button>
-          <a href="{% url 'company_update' company.id %}" class="btn btn-sm btn-warning">Modifier</a>
+          <a href="{% url 'edit_company' company.id %}" class="btn btn-sm btn-warning">Modifier</a>
           <button type="button" class="btn btn-sm btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise?')) {
               window.location.href = '{% url 'company_delete' company.pk %}';
                }">
@@ -65,6 +65,10 @@
             <div class="mb-3">
               <label class="form-label">Adresse physique</label>
               <p>{{ company.physical_address }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Ville</label>
+              <p>{{ company.city }}</p>
             </div>
           </div>
           <div class="col-md-6">

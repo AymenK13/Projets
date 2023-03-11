@@ -1,5 +1,5 @@
 from django import forms
-from .models import Company, Note
+from .models import Company, Note, JobAd
 
 
 class CompanyForm(forms.ModelForm):
@@ -14,7 +14,14 @@ class CompanyForm(forms.ModelForm):
             'notes': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
         }
 
+
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ('text',)
+
+
+class JobAdForm(forms.ModelForm):
+    class Meta:
+        model = JobAd
+        fields = ['company', 'job_title', 'job_description', 'job_location', 'job_type', 'job_link']
