@@ -8,7 +8,7 @@ class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = (
-            'name', 'website', 'email_address', 'physical_address', 'contact_name', 'job_listing_site',
+            'name', 'website', 'email_address', 'physical_address', 'contact_name',
         )
         widgets = {
             'notes': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),

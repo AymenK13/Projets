@@ -55,58 +55,44 @@
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Site web</label>
-              <a href="{{ company.website }}">{{ company.website }}</a>
+              <label class="form-label">Site web:</label>
+              <p class="limited-width"><a href="{{ company.website }}">{{ company.website }}</a></p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Adresse email</label>
+              <label class="form-label">Adresse email:</label>
               <p>{{ company.email_address }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Adresse physique</label>
+              <label class="form-label">Adresse physique:</label>
               <p>{{ company.physical_address }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Ville</label>
+              <label class="form-label">Ville:</label>
               <p>{{ company.city }}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Personne à contacter</label>
+              <label class="form-label">Personne à contacter:</label>
               <p>{{ company.contact_name }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Site web des offres d'emploi</label>
-              <a href="{{ company.job_listing_site }}">{{ company.job_listing_site }}</a>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Notes</label>
+              <label class="form-label">Notes:</label>
               {% if company.notes.exists %}
               <ul>
                 {% for note in company.notes.all %}
-                  <li>
-                    {{ note.text }}
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#noteModal{{ note.id }}">Modifier</button>
-                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteNoteModal{{ note.id }}">Supprimer</button>
-                  </li>
+                <li>{{ note.content }}</li>
                 {% endfor %}
               </ul>
+              {% else %}
+              <p>Aucune note pour cette entreprise.</p>
               {% endif %}
-              <form method="POST" action="{% url 'add_note' company.id %}" class="mt-3">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label class="form-label" for="note">Ajouter une note</label>
-                  <textarea class="form-control" id="note" name="text" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Ajouter la note</button>
-              </form>
             </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+<a href="{% url 'company_job_ads' company_id=company.id %}" class="btn btn-primary">Voir les {{ company.job_ads.count }} offres d'emploi</a>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>

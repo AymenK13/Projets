@@ -7,6 +7,11 @@
 /* Corps de la page */
 body {
   background-color: var(--secondary-color);
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  margin-top: 50px;
+}
+
 }
 
 /* Navigation */
@@ -20,25 +25,6 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--primary-color) !important;
-}
-
-/* Cards */
-.card-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.card-text {
-  font-size: 18px;
-}
-
-.card-link {
-  font-weight: bold;
-  color: var(--secondary-color) !important;
-}
-
-.card-link:hover {
   color: var(--primary-color) !important;
 }
 
@@ -81,6 +67,8 @@ body {
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid var(--secondary-color);
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
 .table tbody td:last-child {
@@ -103,75 +91,80 @@ body {
 }
 
 .add-company-btn {
-display: block;
-margin-bottom: 20px;
-background-color: #72bf44;
-color: white;
-border: none;
-border-radius: 5px;
-padding: 10px 20px;
-font-size: 18px;
-font-weight: bold;
-position: absolute;
-top: 100px;
-left: 50%;
-transform: translateX(-50%);
+  display: block;
+  margin-bottom: 20px;
+  background-color: #72bf44;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .table-responsive {
   margin-top: 150px;
+  overflow-y: auto;
+  max-height: 800px;
 }
 
- /* Formulaire */
-  .add-company-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    margin: 50px auto;
-  }
+/* Formulaire */
+.add-company-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  margin: 50px auto;
+}
 
-  /* Titre */
-  .add-company-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
+/* Titre */
+.add-company-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 
-  /* Champs de formulaire */
-  .add-company-form label {
-    font-size: 18px;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 10px;
-  }
+/* Cards d'annonces */
+.card-custom {
+  background-image: linear-gradient(to right, #72bf44, #b6d67e);
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  height: 100%;
+}
 
-  .add-company-form input,
-  .add-company-form select,
-  .add-company-form textarea {
-    width: 100%;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  }
+.gradient-bg {
+  background: #fff;
+  background-image: linear-gradient(to bottom right, #72bf44, #b6d67e);
+}
 
-  /* Bouton de soumission */
-  .add-company-form button {
-    display: block;
-    margin-top: 20px;
-    background-color: #72bf44;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.card:hover {
+  transform: translateY(-5px);
+}
+.card-title {
+  font-size: 25px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color:
+}
+.card-subtitle {
+  font-size: 16px;
+  margin-bottom: 1rem
 
-  .add-company-form button:hover {
-    background-color: #8bc34a;
-  }
+.card-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    padding-top: 100px;
+
+.row {
+    margin-top: 100px ;
+}

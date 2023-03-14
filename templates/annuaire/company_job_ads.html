@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+  <h2>{{ company.name }}</h2>
+  <h6>Offres d'emploi</h6>
+  <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
+    {% for job_ad in job_ads %}
+      <div class="col">
+        <div class="card card-custom h-100 gradient-bg bg-light">
+          <div class="card-body">
+            <h5 class="card-title">{{ job_ad.job_title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ job_ad.job_type }}</h6>
+            <p class="card-text">{{ job_ad.job_description }}</p>
+            <a href="{{ job_ad.job_link }}" class="card-link">{{ job_ad.job_link }}</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annonce{{ job_ad.id }}">
+              Voir plus
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="annonce{{ job_ad.id }}" tabindex="-1" aria-labelledby="annonce{{ job_ad.id }}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="annonce{{ job_ad.id }}Label">{{ job_ad.job_title }} chez {{ job_ad.company.name }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>{{ job_ad.job_description }}</p>
+              <p><strong>Lieu:</strong> {{ job_ad.job_location }}</p>
+              <p><strong>Type:</strong> {{ job_ad.job_type }}</p>
+              <p><strong>Site:</strong> {{ job_ad.job_site }}</p>
+              <p><strong>Date d'ajout:</strong> {{ job_ad.date_added|date:"d/m/Y" }}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>Aucune annonce trouvée.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

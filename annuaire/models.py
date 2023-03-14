@@ -40,10 +40,7 @@ class Company(models.Model):
         blank=True,
         verbose_name="Name of the contact person"
     )
-    job_listing_site = models.URLField(
-        blank=True,
-        verbose_name="Job listing website"
-    )
+
     notes = models.ManyToManyField(
         Note,
         blank=True,
@@ -60,22 +57,29 @@ class Company(models.Model):
     def formatted_created_at(self):
         return timezone.localtime(self.created_at).strftime('%d/%m/%y %H:%M')
 
+    def ad_count(self):
+        return self.job_ads.count()
+
+
 
 class JobAd(models.Model):
     company = models.ForeignKey(
         Company,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='job_ads'
     )
     job_title = models.CharField(max_length=100)
     job_description = models.TextField()
     job_location = models.CharField(max_length=100)
     job_type = models.CharField(max_length=100)
+    job_site = models.CharField(max_length=100)
     date_added = models.DateTimeField(default=timezone.now)
     is_favorite = models.BooleanField(default=False)
     job_link = models.CharField(max_length=255, default='')
     contact_date = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['-date_added']  # Tri décroissant par date d'ajout
+
     def __str__(self):
         return self.job_title
-
-
