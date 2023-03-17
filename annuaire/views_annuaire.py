@@ -3,7 +3,6 @@ from django.views.generic import DeleteView
 from .forms import CompanyForm, NoteForm
 from .models import Company, Note, Document
 from django.urls import reverse_lazy
-from django.contrib import messages
 from .forms import DocumentForm
 
 
@@ -55,6 +54,7 @@ def company_list(request):
 
     context = {'company_data': company_data}
     return render(request, 'company_list.html', context)
+
 
 def home(request):
     """
@@ -158,7 +158,7 @@ def add_document(request, company_id):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.company = company  # Ajoutez cette ligne pour associer le document à l'entreprise
+            document.company = company
             document.save()
             return redirect('company_list')
     else:

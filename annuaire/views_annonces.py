@@ -9,15 +9,12 @@ from django.core.paginator import Paginator
 
 def annonces(request):
     sort_by = request.GET.get('sort_by')
-
-    # Si 'sort_by' est vide, utilisez la valeur par défaut '-date_added'
     if not sort_by:
         sort_by = '-date_added'
 
-    # Triez les annonces en fonction de la clé 'sort_by'
     annonces_list = JobAd.objects.all().order_by(sort_by)
 
-    paginator = Paginator(annonces_list, 2)  # Afficher 2 annonces par page (vous pouvez changer ce nombre)
+    paginator = Paginator(annonces_list, 6)
     page = request.GET.get('page')
     annonces = paginator.get_page(page)
 

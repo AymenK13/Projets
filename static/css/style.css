@@ -9,7 +9,7 @@ body {
   background-color: var(--secondary-color);
   font-family: Arial, sans-serif;
   font-size: 16px;
-  margin-top: 100px; /* Hauteur de la navbar + 20px de marge */
+  margin-top: 100px;
   margin-bottom: 80px;
 }
 
@@ -109,36 +109,6 @@ body {
   margin-top: 150px;
   overflow-y: auto;
   max-height: 800px;
-}
-
-/* Formulaire */
-.add-company-form {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
-  margin: 50px auto;
-}
-
-.limited-width {
-  max-width: 250px;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.form-label {
-  font-weight: bold;
-}
-
-.form-label a {
-  display: block;
-  margin-top: 5px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  width: 100%;
 }
 
 /* Titre */

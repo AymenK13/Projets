@@ -123,7 +123,7 @@ class JobAd(models.Model):
 class Document(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE,
-        related_name='documents',  # Change this line
+        related_name='documents',
     )
     document = models.FileField(
         upload_to='documents/',
