@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Modifier l'entreprise "{{ company.name }}"</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-  </form>
+  <div class="container">
+    <h1 class="text-center text-white mb-4">Modifier l'entreprise "{{ company.name }}"</h1>
+    <div class="add-company-form">
+      <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.auto_id }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+      </form>
+    </div>
+  </div>
 {% endblock %}
-l>

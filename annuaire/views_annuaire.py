@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DeleteView
 from .forms import CompanyForm, NoteForm
-from .models import Company, Note
+from .models import Company, Note, Document
 from django.urls import reverse_lazy
+from django.contrib import messages
+from .forms import DocumentForm
 
 
 def add_company(request):
@@ -40,9 +42,19 @@ def add_company(request):
 
 def company_list(request):
     companies = Company.objects.all().order_by('-created_at')
-    context = {'companies': companies}
-    return render(request, 'company_list.html', context)
+    company_data = []
 
+    for company in companies:
+        documents = company.documents.filter(document__isnull=False)
+        notes = company.notes.all()
+        company_data.append({
+            'company': company,
+            'documents': documents,
+            'notes': notes,
+        })
+
+    context = {'company_data': company_data}
+    return render(request, 'company_list.html', context)
 
 def home(request):
     """
@@ -107,12 +119,28 @@ def edit_company(request, pk):
 
 
 def add_note(request, company_id):
+    """
+    View pour ajouter une note à une entreprise.
+
+    Utilise un formulaire pour créer un nouvel objet Note dans la base de données.
+    Si la requête est de type POST et que le formulaire est valide, la note est enregistrée dans la base de données
+    et est associée à l'entreprise correspondante.
+
+    Args:
+        request: La requête HTTP.
+        company_id: L'ID de l'entreprise à laquelle ajouter une note.
+
+    Returns:
+        La page HTML pour ajouter une note à une entreprise.
+    """
     if request.method == 'POST':
         note_form = NoteForm(request.POST)
         if note_form.is_valid():
             company = Company.objects.get(id=company_id)
-            note = note_form.save()
-            company.notes.create(text=note.text)
+            note = note_form.save(commit=False)
+            note.company = company
+            note.save()
+            company.notes.add(note)  # Change this line
             return redirect('company_list')
     else:
         note_form = NoteForm()
@@ -122,3 +150,17 @@ def add_note(request, company_id):
     }
 
     return render(request, 'add_note.html', context)
+
+
+def add_document(request, company_id):
+    company = get_object_or_404(Company, id=company_id)
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.company = company  # Ajoutez cette ligne pour associer le document à l'entreprise
+            document.save()
+            return redirect('company_list')
+    else:
+        form = DocumentForm()
+    return render(request, 'annuaire/add_document.html', {'form': form, 'company': company})

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center text-white mb-4">Vérifier l'existence de l'entreprise</h1>
+    <div class="add-company-form">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="company_name" class="form-label">Nom de l'entreprise</label>
+          <input type="text" class="form-control" id="company_name" name="company_name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Vérifier</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

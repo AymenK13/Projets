@@ -1,15 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import JobAd, Company
 from .forms import JobAdForm
+from django.utils import timezone
+from django.urls import reverse
+from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 def annonces(request):
-    """
-    View qui récupère toutes les annonces et les renvoie sous forme de contexte
-    pour être affichées sur la page des annonces
-    """
-    annonces = JobAd.objects.all()
-    return render(request, 'job_ad_list.html', {'annonces': annonces})
+    sort_by = request.GET.get('sort_by')
+
+    # Si 'sort_by' est vide, utilisez la valeur par défaut '-date_added'
+    if not sort_by:
+        sort_by = '-date_added'
+
+    # Triez les annonces en fonction de la clé 'sort_by'
+    annonces_list = JobAd.objects.all().order_by(sort_by)
+
+    paginator = Paginator(annonces_list, 2)  # Afficher 2 annonces par page (vous pouvez changer ce nombre)
+    page = request.GET.get('page')
+    annonces = paginator.get_page(page)
+
+    return render(request, 'job_ad_list.html', {'annonces': annonces, 'sort_by': sort_by})
 
 
 def add_job_ad(request):
@@ -40,19 +52,14 @@ def delete_job_ad(request, pk):
     return render(request, 'delete_job_ad.html', {'job_ad': job_ad})
 
 
-def update_contact_status(request, pk):
-    """
-    View qui met à jour le statut de contact d'une annonce
-    """
-    annonce = get_object_or_404(JobAd, pk=pk)
-    if request.method == 'POST':
-        contacted = request.POST.get('contacted', False)
+def update_contact_date(request, pk):
+    job_ad = get_object_or_404(JobAd, id=pk)
+    contacted = request.POST.get('contacted', False)
+    if contacted:
         contact_date = request.POST.get('contact_date', None)
-        annonce.contact_date = contact_date if contacted else None
-        annonce.save()
-        return redirect('annonces')
-    else:
-        return render(request, 'job_ad_list.html', {'annonces': JobAd.objects.all()})
+        job_ad.contact_date = timezone.now()
+        job_ad.save()
+    return redirect('annonces')
 
 
 def company_job_ads(request, company_id):
@@ -65,3 +72,23 @@ def company_job_ads(request, company_id):
     job_ads = JobAd.objects.filter(company=company)
     context = {'company': company, 'ad_count': ad_count, 'job_ads': job_ads}
     return render(request, 'company_job_ads.html', context)
+
+
+def toggle_favorite(request, pk):
+    job_ad = get_object_or_404(JobAd, pk=pk)
+    job_ad.is_favorite = not job_ad.is_favorite
+    job_ad.save()
+    return redirect(reverse('annonces'))
+
+
+def check_company_existence(request):
+    if request.method == 'POST':
+        company_name = request.POST.get('company_name')
+        try:
+            company = Company.objects.get(name=company_name)
+            return redirect('add_job_ad')
+        except Company.DoesNotExist:
+            messages.error(request, "L'entreprise n'existe pas. Veuillez d'abord créer l'entreprise.")
+            return redirect('add_company')
+    else:
+        return render(request, 'check_company_existence.html')

@@ -4,24 +4,30 @@
 
 {% block content %}
 
+<div class="container">
+    <form method="get" class="sort-form">
+        <label for="sort_by">Trier par :</label>
+        <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+            <option value="-date_added">Date d'ajout (descendant)</option>
+            <option value="date_added">Date d'ajout (ascendant)</option>
+            <option value="job_title">Titre du poste (A-Z)</option>
+            <option value="-job_title">Titre du poste (Z-A)</option>
+            <option value="company__city">Ville de l'entreprise (A-Z)</option>
+            <option value="-company__city">Ville de l'entreprise (Z-A)</option>
+        </select>
+    </form>
     <div class="container">
         <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
          {% for annonce in annonces %}
          <div class="col">
         <div class="card card-custom h-100 gradient-bg bg-light">
                         <div class="card-body">
+                            <!-- Titre de l'annonce -->
                             <h5 class="card-title"><strong>{{ annonce.job_title }}</strong></h5>
+                            <!-- Nom de l'entreprise -->
                             <h6 class="card-subtitle mb-2 text-muted"><em>{{ annonce.company.name }}</em></h6>
+                            <!-- Localisation de l'annonce -->
                             <p class="card-text" ><small>{{ annonce.job_location }}</small></p>
-                            {% if user.is_authenticated %}
-                                <button class="btn btn-sm btn-outline-primary mark-favorite" data-job-id="{{ annonce.id }}" style="border: 1px solid black;">
-                                    {% if annonce.is_favorite %}
-                                        <i class="bi bi-heart-fill"></i>
-                                    {% else %}
-                                        <i class="bi bi-heart"></i>
-                                    {% endif %}
-                                </button>
-                            {% endif %}
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annonce{{ annonce.id }}">
                                 Voir plus
                             </button>
@@ -32,9 +38,38 @@
                         </div>
                     </div>
                 </div>
+         {% endfor %}
+        <div class="pagination-container">
+                  <div class="pagination">
+                    <span class="step-links">
+                      {% if annonces.has_previous %}
+                        <a href="?page=1&sort_by={{ sort_by }}" class="step-links">première</a>
+                        <a href="?page={{ annonces.previous_page_number }}&sort_by={{ sort_by }}" class="step-links">précédente</a>
+                      {% else %}
+                        <span class="step-links disabled">première</span>
+                        <span class="step-links disabled">précédente</span>
+                      {% endif %}
 
+                      <span class="current">
+                        Page {{ annonces.number }} sur {{ annonces.paginator.num_pages }}.
+                      </span>
 
-    <!-- Modal -->
+                      {% if annonces.has_next %}
+                        <a href="?page={{ annonces.next_page_number }}&sort_by={{ sort_by }}" class="step-links">suivante</a>
+                        <a href="?page={{ annonces.paginator.num_pages }}&sort_by={{ sort_by }}" class="step-links">dernière</a>
+                      {% else %}
+                        <span class="step-links disabled">suivante</span>
+                        <span class="step-links disabled">dernière</span>
+                      {% endif %}
+                    </span>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+<!-- Modal -->
+{% for annonce in annonces %}
 <div class="modal fade" id="annonce{{ annonce.id }}" tabindex="-1" aria-labelledby="annonce{{ annonce.id }}Label" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -48,41 +83,49 @@
         <p><strong>Type:</strong> {{ annonce.job_type }}</p>
         <p><strong>Site:</strong> {{ annonce.job_site }}</p>
         <p><strong>Date d'ajout:</strong> {{ annonce.date_added|date:"d/m/Y" }}</p>
-
-        <form method="POST" action="{% url 'update_contact_status' pk=annonce.pk %}">
-          {% csrf_token %}
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="contacted" id="not_contacted" value="false" {% if not annonce.contact_date %}checked{% endif %}>
-            <label class="form-check-label" for="not_contacted">
-              Pas encore contacté
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="contacted" id="contacted" value="true" {% if annonce.contact_date %}checked{% endif %}>
-            <label class="form-check-label" for="contacted">
-              Contacté le
-            </label>
-            <input type="date" class="form-control" id="contact_date" name="contact_date" {% if not annonce.contact_date %}disabled{% endif %} value="{% if annonce.contact_date %}{{ annonce.contact_date }}{% endif %}">
-          </div>
-          <button type="submit" class="btn btn-primary">Valider</button>
-        </form>
+        {% if annonce.contact_date %}
+            <p><strong>Contacté le :</strong> {{ annonce.contact_date|date:"d F Y" }}</p>
+        {% else %}
+            <p>Pas encore contacté</p>
+        {% endif %}
+          <form method="POST" action="{% url 'update_contact_date' pk=annonce.pk %}">
+            {% csrf_token %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="contacted" id="not_contacted" value="false" {% if not annonce.contact_date %}checked{% endif %}>
+                <label class="form-check-label" for="not_contacted">
+                Pas encore contacté
+             </label>
+            </div>
+             <div class="form-check">
+                <input class="form-check-input" type="radio" name="contacted" id="contacted" value="true" {% if annonce.contact_date %}checked{% endif %}>
+                <label class="form-check-label" for="contacted">
+                     Contacté le
+                </label>
+                <input type="date" class="form-control" id="contact_date" name="contact_date" value="{% if annonce.contact_date %}{{ annonce.contact_date|date:"Y-m-d" }}{% endif %}">
+            </div>
+            <button type="submit" class="btn btn-primary">Valider</button>
+          </form>
       </div>
       <div class="modal-footer">
+          <a href="{% url 'toggle_favorite' pk=annonce.pk %}">Favori</a>
+            {% if annonce.is_favorite %}
+                <span class="text-primary">★</span>
+            {% else %}
+                <span class="text-muted">☆</span>
+            {% endif %}
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>
 </div>
+{% empty %}
+<p>Aucune annonce trouvée.</p>
+{% endfor %}
 
-
-    {% empty %}
-    <p>Aucune annonce trouvée.</p>
-    {% endfor %}
+</div>
+<div class="row justify-content-center">
+  <div class="add-annonce-btn-container text-center">
+    <a href="{% url 'check_company_existence' %}" class="btn btn-primary">Ajouter une annonce</a>
   </div>
-        <div class="row justify-content-center">
-        <div class="add-annonce-btn-container text-center">
-        <a href="{% url 'add_job_ad' %}" class="btn btn-primary">Ajouter une annonce</a>
-        </div>
-
 </div>
 {% endblock %}

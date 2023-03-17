@@ -141,8 +141,6 @@ body {
   width: 100%;
 }
 
-
-
 /* Titre */
 .add-company-form h2 {
   font-size: 24px;
@@ -196,3 +194,38 @@ body {
 .row {
     margin-top: 100px ;
 }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination .step-links {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination a,
+.pagination .step-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover,
+.pagination .step-links a:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.pagination .current {
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
