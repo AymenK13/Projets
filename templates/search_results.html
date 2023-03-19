@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Résultats de recherche pour "{{ query }}"</h1>
+
+    <h2>Entreprises</h2>
+    {% if companies %}
+        <ul>
+            {% for company in companies %}
+<div class="modal fade" id="companyModal{{ company.id }}" tabindex="-1" aria-labelledby="companyModal{{ company.id }}Label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModal{{ company.id }}Label">{{ company.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Site web:</label>
+              <p class="limited-width"><a href="{{ company.website }}">{{ company.website }}</a></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Adresse email:</label>
+              <p>{{ company.email_address }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Adresse physique:</label>
+              <p>{{ company.physical_address }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Ville:</label>
+              <p>{{ company.city }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Personne à contacter:</label>
+              <p>{{ company.contact_name }}</p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes:</label>
+              {% if company.notes %}
+              <ul>
+                {% for note in company.notes %}
+                <li>{{ note.content }}</li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>Aucune note pour cette entreprise.</p>
+              {% endif %}
+            </div>
+                        <div class="mb-3">
+                <label class="form-label">Documents :</label>
+                {% if company.documents %}
+                    <ul>
+                        {% for document in company.documents %}
+                            {% if document.document %}
+                                <li><a href="{{ document.document.url }}" target="_blank">{{ document.document.name }}</a></li>
+                            {% else %}
+                                <li>Document sans fichier associé</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucun document pour cette entreprise.</p>
+                {% endif %}
+            </div>
+            <a href="{% url 'add_document' company.id %}" class="btn btn-primary">Ajouter un document</a>
+        </div>
+    </div>
+      <a href="{% url 'company_job_ads' company_id=company.id %}" class="btn btn-primary">Voir les {{ company.job_ads.count }} offres d'emploi</a>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+    {% else %}
+        <p>Aucune entreprise trouvée.</p>
+    {% endif %}
+
+    <h2>Annonces</h2>
+    {% if job_ads %}
+        <ul>
+            {% for job_ad in job_ads %}
+                <li><a href="{% url 'job_ad_detail' pk=job_ad.pk %}">{{ job_ad.job_title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune annonce trouvée.</p>
+    {% endif %}
+{% endblock %}
