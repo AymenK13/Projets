@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DeleteView
 from .forms import CompanyForm, NoteForm
-from .models import Company, Note, Document
+from .models import Company, JobAd
 from django.urls import reverse_lazy
 from .forms import DocumentForm
+from django.db.models import Q
 
 
 def add_company(request):
@@ -66,7 +67,21 @@ def home(request):
     Returns:
         La page HTML de la page d'accueil.
     """
-    return render(request, 'index.html')
+    companies_count = Company.objects.count()
+    job_ads_count = JobAd.objects.count()
+    applications_count = JobAd.objects.filter(contact_date__isnull=False).count()
+    latest_company = Company.objects.order_by('-created_at').first()
+    latest_job_ad = JobAd.objects.latest('date_added')
+
+    context = {
+        'companies_count': companies_count,
+        'job_ads_count': job_ads_count,
+        'applications_count': applications_count,
+        'latest_company': latest_company,
+        'latest_job_ad': latest_job_ad,
+    }
+
+    return render(request, 'index.html', context)
 
 
 class CompanyDeleteView(DeleteView):
@@ -140,7 +155,7 @@ def add_note(request, company_id):
             note = note_form.save(commit=False)
             note.company = company
             note.save()
-            company.notes.add(note)  # Change this line
+            company.notes.add(note)
             return redirect('company_list')
     else:
         note_form = NoteForm()
@@ -164,3 +179,22 @@ def add_document(request, company_id):
     else:
         form = DocumentForm()
     return render(request, 'annuaire/add_document.html', {'form': form, 'company': company})
+
+
+def search(request):
+    query = request.GET.get('q')
+
+    companies = Company.objects.filter(
+        Q(name__icontains=query) | Q(city__icontains=query)
+    )
+
+    job_ads = JobAd.objects.filter(
+        Q(job_title__icontains=query) | Q(job_description__icontains=query) | Q(job_location__icontains=query)
+    )
+
+    context = {
+        'companies': companies,
+        'job_ads': job_ads,
+        'query': query,
+    }
+    return render(request, 'search_results.html', context);

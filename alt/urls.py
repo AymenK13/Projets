@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from annuaire.views_annuaire import add_company, company_list, home, CompanyDeleteView, edit_company, add_note,     \
-                                    add_document
+                                    add_document, search
 from annuaire.views_annonces import annonces, add_job_ad, delete_job_ad, update_contact_date, company_job_ads,  \
                                     toggle_favorite, check_company_existence
 
@@ -11,6 +11,7 @@ from annuaire.views_annonces import annonces, add_job_ad, delete_job_ad, update_
 urlpatterns = [
     # Page d'accueil
     path('', home, name='index'),
+    path('search/', search, name='search'),
 
     # Entreprises
     path('add/', add_company, name='add_company'),

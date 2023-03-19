@@ -5,68 +5,69 @@
 {% block content %}
 
 <div class="container">
-    <form method="get" class="sort-form">
-        <label for="sort_by">Trier par :</label>
-        <select name="sort_by" id="sort_by" onchange="this.form.submit()">
-            <option value="-date_added">Date d'ajout (descendant)</option>
-            <option value="date_added">Date d'ajout (ascendant)</option>
-            <option value="job_title">Titre du poste (A-Z)</option>
-            <option value="-job_title">Titre du poste (Z-A)</option>
-            <option value="company__city">Ville de l'entreprise (A-Z)</option>
-            <option value="-company__city">Ville de l'entreprise (Z-A)</option>
-        </select>
-    </form>
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
-         {% for annonce in annonces %}
-         <div class="col">
-        <div class="card card-custom h-100 gradient-bg bg-light">
-                        <div class="card-body">
-                            <!-- Titre de l'annonce -->
-                            <h5 class="card-title"><strong>{{ annonce.job_title }}</strong></h5>
-                            <!-- Nom de l'entreprise -->
-                            <h6 class="card-subtitle mb-2 text-muted"><em>{{ annonce.company.name }}</em></h6>
-                            <!-- Localisation de l'annonce -->
-                            <p class="card-text" ><small>{{ annonce.job_location }}</small></p>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annonce{{ annonce.id }}">
-                                Voir plus
-                            </button>
-                            <form method="POST" action="{% url 'delete_job_ad' pk=annonce.pk %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-         {% endfor %}
-        <div class="pagination-container">
-                  <div class="pagination">
-                    <span class="step-links">
-                      {% if annonces.has_previous %}
-                        <a href="?page=1&sort_by={{ sort_by }}" class="step-links">première</a>
-                        <a href="?page={{ annonces.previous_page_number }}&sort_by={{ sort_by }}" class="step-links">précédente</a>
-                      {% else %}
-                        <span class="step-links disabled">première</span>
-                        <span class="step-links disabled">précédente</span>
-                      {% endif %}
+  <form method="get" class="sort-form">
+    <label for="sort_by">Trier par :</label>
+    <select name="sort_by" id="sort_by" onchange="this.form.submit()" class="form-select">
+      <option value="-date_added" {% if sort_by == '-date_added' %}selected{% endif %}>Date d'ajout (descendant)</option>
+      <option value="date_added" {% if sort_by == 'date_added' %}selected{% endif %}>Date d'ajout (ascendant)</option>
+      <option value="job_title" {% if sort_by == 'job_title' %}selected{% endif %}>Titre du poste (A-Z)</option>
+      <option value="-job_title" {% if sort_by == '-job_title' %}selected{% endif %}>Titre du poste (Z-A)</option>
+      <option value="company__city" {% if sort_by == 'company__city' %}selected{% endif %}>Ville de l'entreprise (A-Z)</option>
+      <option value="-company__city" {% if sort_by == '-company__city' %}selected{% endif %}>Ville de l'entreprise (Z-A)</option>
+    </select>
+  </form>
 
-                      <span class="current">
-                        Page {{ annonces.number }} sur {{ annonces.paginator.num_pages }}.
-                      </span>
-
-                      {% if annonces.has_next %}
-                        <a href="?page={{ annonces.next_page_number }}&sort_by={{ sort_by }}" class="step-links">suivante</a>
-                        <a href="?page={{ annonces.paginator.num_pages }}&sort_by={{ sort_by }}" class="step-links">dernière</a>
-                      {% else %}
-                        <span class="step-links disabled">suivante</span>
-                        <span class="step-links disabled">dernière</span>
-                      {% endif %}
-                    </span>
-                  </div>
-                </div>
-            </div>
-          </div>
+  <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
+    {% for annonce in annonces %}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <!-- Titre de l'annonce -->
+          <h5 class="card-title"><strong>{{ annonce.job_title }}</strong></h5>
+          <!-- Nom de l'entreprise -->
+          <h6 class="card-subtitle mb-2 text-muted"><em>{{ annonce.company.name }}</em></h6>
+          <!-- Localisation de l'annonce -->
+          <p class="card-text"><small>{{ annonce.job_location }}</small></p>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#annonce{{ annonce.id }}">
+            Voir plus
+          </button>
+          <form method="POST" action="{% url 'delete_job_ad' pk=annonce.pk %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </form>
         </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+<div class="pagination-container">
+  <ul class="pagination">
+    {% if annonces.has_previous %}
+      <li class="page-item"><a href="?page=1&sort_by={{ sort_by }}" class="page-link">&laquo;</a></li>
+      <li class="page-item"><a href="?page={{ annonces.previous_page_number }}&sort_by={{ sort_by }}" class="page-link">&lsaquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&lsaquo;</span></li>
+    {% endif %}
+
+    {% for i in annonces.paginator.page_range %}
+      {% if i == annonces.number %}
+        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+      {% elif i > annonces.number|add:'-3' and i < annonces.number|add:'3' %}
+        <li class="page-item"><a href="?page={{ i }}&sort_by={{ sort_by }}" class="page-link">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if annonces.has_next %}
+      <li class="page-item"><a href="?page={{ annonces.next_page_number }}&sort_by={{ sort_by }}" class="page-link">&rsaquo;</a></li>
+      <li class="page-item"><a href="?page={{ annonces.paginator.num_pages }}&sort_by={{ sort_by }}" class="page-link">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&rsaquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+  </ul>
+</div>
+
 
 <!-- Modal -->
 {% for annonce in annonces %}

@@ -1,52 +1,70 @@
 {% extends "base.html" %}
-{% load bootstrap5 %}
 {% load static %}
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>À mon job!</title>
-    {% bootstrap_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
-</head>
-<body>
-    <div class="container-fluid" style="margin-top: 80px;">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-            <div class="col">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Card 1</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
+{% block content %}
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
+      <div class="col">
+        <div class="card h-100">
+          <a href="{% url 'company_list' %}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ companies_count }}</strong></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><em>Entreprises enregistrées</em></h6>
             </div>
-            <div class="col">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Card 2</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Card 3</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+          </a>
         </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <a href="{% url 'annonces' %}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ job_ads_count }}</strong></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><em>Annonces enregistrées</em></h6>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><strong>{{ applications_count }}</strong></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><em>Candidatures envoyées</em></h6>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <a href="{% url 'edit_company' pk=latest_company.pk %}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ latest_company.name }}</strong></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><em>Dernière entreprise ajoutée</em></h6>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <a href="{% url 'update_contact_date' pk=latest_job_ad.pk %}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ latest_job_ad.job_title }}</strong></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><em>Dernière annonce ajoutée</em></h6>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 
-</body>
-</html>
-
+  <div class="container mt-5">
+    <form method="get" action="{% url 'search' %}">
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control" name="q" placeholder="Rechercher...">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
