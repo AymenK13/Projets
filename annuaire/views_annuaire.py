@@ -168,6 +168,10 @@ def add_note(request, company_id):
 
 
 def add_document(request, company_id):
+    """
+    View qui affiche le formulaire pour ajouter un document à une entreprise donnée
+    et qui enregistre les données du formulaire si valide.
+    """
     company = get_object_or_404(Company, id=company_id)
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -182,6 +186,9 @@ def add_document(request, company_id):
 
 
 def search(request):
+    """
+    View qui permet de chercher des entreprises et des annonces d'emploi en fonction d'une requête de recherche.
+    """
     query = request.GET.get('q')
 
     companies = Company.objects.filter(
@@ -197,4 +204,4 @@ def search(request):
         'job_ads': job_ads,
         'query': query,
     }
-    return render(request, 'search_results.html', context);
+    return render(request, 'search_results.html', context)

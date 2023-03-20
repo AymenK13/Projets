@@ -4,6 +4,10 @@ from django.utils import timezone
 
 
 class Note(models.Model):
+    """
+    Model représentant une note associée à une entreprise.
+    """
+
     text = models.TextField()
 
     def __str__(self):
@@ -11,6 +15,20 @@ class Note(models.Model):
 
 
 class Company(models.Model):
+    """
+    Model représentant une entreprise.
+
+    Attributes:
+        name (CharField): Le nom de l'entreprise.
+        website (URLField): Le site web de l'entreprise.
+        city (CharField): La ville où est située l'entreprise.
+        email_address (EmailField): L'adresse e-mail de l'entreprise.
+        physical_address (CharField): L'adresse physique de l'entreprise.
+        contact_name (CharField): Le nom de la personne à contacter.
+        notes (ManyToManyField): Les notes associées à l'entreprise.
+        created_at (DateTimeField): La date de création de l'entreprise.
+    """
+
     name = models.CharField(
         max_length=100,
         verbose_name="Nom de l'entreprise"
@@ -23,8 +41,8 @@ class Company(models.Model):
         max_length=100,
         default='Unknown',
         blank=True,
-        verbose_name="Ville de l'entreprise")
-
+        verbose_name="Ville de l'entreprise"
+    )
     email_address = models.EmailField(
         blank=True,
         null=True,
@@ -55,13 +73,47 @@ class Company(models.Model):
         return self.name
 
     def formatted_created_at(self):
+        """
+        Retourne la date de création de l'entreprise au format 'jj/mm/aa hh:mm'.
+        """
         return timezone.localtime(self.created_at).strftime('%d/%m/%y %H:%M')
 
     def ad_count(self):
+        """
+        Retourne le nombre d'annonces d'emploi associées à l'entreprise.
+        """
         return self.job_ads.count()
 
 
 class JobAd(models.Model):
+    """
+    Modèle représentant une annonce d'emploi.
+
+    Attributes
+    ----------
+    company : Company
+        L'entreprise pour laquelle l'annonce est postée.
+    job_title : str
+        Le titre du poste annoncé.
+    job_description : str, optional
+        La description du poste annoncé, par défaut "".
+    job_location : str, optional
+        La localisation du poste annoncé, par défaut "".
+    job_type : str, optional
+        Le type de poste annoncé, par défaut "".
+    job_site : str, optional
+        Le site du poste annoncé, par défaut "".
+    date_added : datetime.datetime
+        La date d'ajout de l'annonce.
+    job_link : str, optional
+        Le lien vers l'annonce, par défaut "".
+    contact_date : datetime.datetime, optional
+        La date de contact pour cette annonce, par défaut None.
+    is_favorite : bool
+        Booléen indiquant si l'annonce est marquée comme favorite ou non.
+
+    """
+
     company = models.ForeignKey(
         Company,
         on_delete=models.CASCADE,
@@ -117,8 +169,15 @@ class JobAd(models.Model):
         verbose_name_plural = "Annonces d'emploi"
 
     def __str__(self):
-        return self.job_title
+        """
+        Renvoie une représentation sous forme de chaîne de caractères de l'annonce d'emploi.
 
+        Returns
+        -------
+        str
+            Une représentation sous forme de chaîne de caractères de l'annonce d'emploi.
+        """
+        return self.job_title
 
 class Document(models.Model):
     company = models.ForeignKey(
@@ -133,4 +192,3 @@ class Document(models.Model):
 
     def __str__(self):
         return f"{self.document.name} ({self.company.name})"
-

@@ -8,6 +8,10 @@ from django.core.paginator import Paginator
 
 
 def annonces(request):
+    """
+    View qui affiche la liste de toutes les annonces d'emploi enregistrées,
+    triées selon l'ordre spécifié par l'utilisateur et paginées.
+    """
     sort_by = request.GET.get('sort_by')
     if not sort_by:
         sort_by = '-date_added'
@@ -23,8 +27,8 @@ def annonces(request):
 
 def add_job_ad(request):
     """
-    View qui affiche le formulaire pour ajouter une nouvelle annonce
-    et qui enregistre les données du formulaire si valide
+    View qui affiche le formulaire pour ajouter une nouvelle annonce d'emploi
+    et qui enregistre les données du formulaire si valide.
     """
     if request.method == 'POST':
         form = JobAdForm(request.POST)
@@ -39,8 +43,8 @@ def add_job_ad(request):
 
 def delete_job_ad(request, pk):
     """
-    View qui affiche la page de confirmation de suppression d'une annonce
-    et qui supprime l'annonce si l'utilisateur confirme
+    View qui affiche la page de confirmation de suppression d'une annonce d'emploi
+    et qui supprime l'annonce si l'utilisateur confirme.
     """
     job_ad = get_object_or_404(JobAd, pk=pk)
     if request.method == 'POST':
@@ -50,6 +54,10 @@ def delete_job_ad(request, pk):
 
 
 def update_contact_date(request, pk):
+    """
+    View qui met à jour la date de contact d'une annonce d'emploi
+    et qui renvoie l'utilisateur à la liste des annonces d'emploi.
+    """
     job_ad = get_object_or_404(JobAd, id=pk)
     contacted = request.POST.get('contacted', False)
     if contacted:
@@ -62,7 +70,7 @@ def update_contact_date(request, pk):
 def company_job_ads(request, company_id):
     """
     View qui récupère toutes les annonces d'une entreprise et les renvoie sous forme de contexte pour être affichées
-    sur la page des annonces d'une entreprise
+    sur la page des annonces d'une entreprise.
     """
     company = get_object_or_404(Company, id=company_id)
     ad_count = company.job_ads.count()
@@ -72,6 +80,10 @@ def company_job_ads(request, company_id):
 
 
 def toggle_favorite(request, pk):
+    """
+    View qui permet de basculer l'état de l'annonce d'emploi entre favori et non favori
+    et qui renvoie l'utilisateur à la liste des annonces d'emploi.
+    """
     job_ad = get_object_or_404(JobAd, pk=pk)
     job_ad.is_favorite = not job_ad.is_favorite
     job_ad.save()
@@ -79,6 +91,11 @@ def toggle_favorite(request, pk):
 
 
 def check_company_existence(request):
+    """
+    Vérifie si l'entreprise saisie dans le formulaire d'ajout d'annonce existe déjà.
+    Redirige vers la page d'ajout d'annonce si l'entreprise existe,
+    ou vers la page d'ajout d'entreprise si elle n'existe pas.
+    """
     if request.method == 'POST':
         company_name = request.POST.get('company_name')
         try:

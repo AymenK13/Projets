@@ -4,6 +4,9 @@ from .models import Company, Note, JobAd, Document
 
 
 class CompanyForm(forms.ModelForm):
+    """
+    Formulaire pour ajouter ou modifier une entreprise.
+    """
     note = forms.CharField(max_length=500, required=False, label='Ajouter une note')
 
     class Meta:
@@ -17,17 +20,26 @@ class CompanyForm(forms.ModelForm):
 
 
 class NoteForm(forms.ModelForm):
+    """
+    Formulaire pour ajouter une note à une entreprise.
+    """
     class Meta:
         model = Note
         fields = ('text',)
 
 
 class JobAdForm(forms.ModelForm):
+    """
+    Formulaire pour ajouter ou modifier une annonce.
+    """
     class Meta:
         model = JobAd
         fields = ['company', 'job_title', 'job_description', 'job_location', 'job_type', 'job_link']
 
     def clean_company(self):
+        """
+        Vérifie si l'entreprise existe avant de l'associer à une annonce.
+        """
         company = self.cleaned_data['company']
         if not Company.objects.filter(id=company.id).exists():
             raise ValidationError("L'entreprise n'existe pas. Veuillez d'abord créer l'entreprise.")
@@ -35,6 +47,9 @@ class JobAdForm(forms.ModelForm):
 
 
 class DocumentForm(forms.ModelForm):
+    """
+    Formulaire pour ajouter un document à une annonce.
+    """
     class Meta:
         model = Document
         fields = ['document']
