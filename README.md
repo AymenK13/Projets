@@ -42,7 +42,7 @@ Dans le cadre de ma recherche d'une alternance, j'ai décidé de créer cette ap
  ###  -Envois d'eamil depuis l'application (tests en cours)
  ###  -Ajout de l'api google maps pour localiser les entreprises
  ###  -Amélioration de l'interface graphique
-  ### -En cas de déployement de l'application, création d'une interface utilisateur 
+ ### -En cas de déployement de l'application, création d'une interface utilisateur 
    et donc utilisation d'un framework frontweb (REACT?) afin d'améliorer l'exéperience utilisateur (améliorer les performances de l'application, gestion de l'état,
    séprer la logique de présentation de la logique de l'application)
    
