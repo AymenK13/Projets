@@ -29,7 +29,7 @@ Dans le cadre de ma recherche d'une alternance, j'ai décidé de créer cette ap
   -Afficher uniquement les favoris, les candidature à laquelle vous avez postulé.
   
  ## Annuaire:
-   -Vous pouvez enregistrer les entreprises et leur lier leurs annonces.
+  ### -Vous pouvez enregistrer les entreprises et leur lier leurs annonces.
    -Ajouter des documents liés à cette entrprise.
    -Ajouter des notes
    -Modifier ou supprimer kes infos d'une entreprise.
