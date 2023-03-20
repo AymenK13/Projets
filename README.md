@@ -7,11 +7,11 @@ Dans le cadre de ma recherche d'une alternance, j'ai décidé de créer cette ap
 
 -Clonez ce repository: git clone https://github.com/AymenK13/Projets.git
 
--Accédez au dossier du projet: cd 'nom-du-repo'
+-Accédez au dossier du projet
 
 -Créez un environnement virtuel: python3 -m venv myenv (remplacez myenv par le nom de votre choix)
 
--Activez l'environnement virtuel: source myenv/bin/activate (pour Windows, utilisez myenv\Scripts\activate)
+-Activez l'environnement virtuel: source myenv/bin/activate, pour Windows, utilisez myenv\Scripts\activate
 
 -Installez les dépendances du projet: pip install -r requirements.txt
 
