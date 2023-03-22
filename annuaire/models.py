@@ -87,32 +87,31 @@ class Company(models.Model):
 
 class JobAd(models.Model):
     """
-    Modèle représentant une annonce d'emploi.
+      Modèle représentant une annonce d'emploi.
 
-    Attributes
-    ----------
-    company : Company
-        L'entreprise pour laquelle l'annonce est postée.
-    job_title : str
-        Le titre du poste annoncé.
-    job_description : str, optional
-        La description du poste annoncé, par défaut "".
-    job_location : str, optional
-        La localisation du poste annoncé, par défaut "".
-    job_type : str, optional
-        Le type de poste annoncé, par défaut "".
-    job_site : str, optional
-        Le site du poste annoncé, par défaut "".
-    date_added : datetime.datetime
-        La date d'ajout de l'annonce.
-    job_link : str, optional
-        Le lien vers l'annonce, par défaut "".
-    contact_date : datetime.datetime, optional
-        La date de contact pour cette annonce, par défaut None.
-    is_favorite : bool
-        Booléen indiquant si l'annonce est marquée comme favorite ou non.
-
-    """
+      Attributes
+      ----------
+      company : Company
+          L'entreprise pour laquelle l'annonce est postée.
+      job_title : str
+          Le titre du poste annoncé.
+      job_description : str, optional
+          La description du poste annoncé, par défaut "".
+      job_location : str, optional
+          La localisation du poste annoncé, par défaut "".
+      job_type : str, optional
+          Le type de poste annoncé, par défaut "".
+      job_site : str, optional
+          Le site du poste annoncé, par défaut "".
+      date_added : datetime.datetime
+          La date d'ajout de l'annonce.
+      job_link : str, optional
+          Le lien vers l'annonce, par défaut "".
+      contact_date : datetime.datetime, optional
+          La date de contact pour cette annonce, par défaut None.
+      is_favorite : bool
+          Booléen indiquant si l'annonce est marquée comme favorite ou non.
+      """
 
     company = models.ForeignKey(
         Company,
@@ -133,11 +132,22 @@ class JobAd(models.Model):
         blank=True,
         verbose_name="Lieu du poste"
     )
+
+    JOB_TYPES = [
+        ('CDI', 'CDI'),
+        ('CDD', 'CDD'),
+        ('Alternance', 'Alternance'),
+        ('Stage', 'Stage'),
+        ('Freelance', 'Freelance'),
+    ]
+
     job_type = models.CharField(
         max_length=100,
         blank=True,
-        verbose_name="Type de poste"
+        verbose_name="Type de poste",
+        choices=JOB_TYPES,
     )
+
     job_site = models.CharField(
         max_length=100,
         blank=True,
@@ -179,6 +189,25 @@ class JobAd(models.Model):
         """
         return self.job_title
 
+    def get_company_name(self):
+        """
+        Retourne le nom de l'entreprise associée à l'annonce d'emploi.
+        """
+        return self.company.name
+
+    def get_company_website(self):
+        """
+        Retourne le site web de l'entreprise associée à l'annonce d'emploi.
+        """
+        return self.company.website
+
+    def get_company_city(self):
+        """
+        Retourne la ville où se trouve l'entreprise associée à l'annonce d'emploi.
+        """
+        return self.company.city
+
+
 class Document(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE,
@@ -192,3 +221,4 @@ class Document(models.Model):
 
     def __str__(self):
         return f"{self.document.name} ({self.company.name})"
+

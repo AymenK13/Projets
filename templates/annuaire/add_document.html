@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <h2 class="mb-4">Ajouter un document à {{ company.name }}</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Ajouter document</button>
-  </form>
-{% endblock %}
+{% load crispy_forms_tags %}
 
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card custom-form">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Ajouter un document à {{ company.name }}</h2>
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="form-group">
+                  {{ field|as_crispy_field }}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary btn-block mt-4">Ajouter document</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -111,11 +111,6 @@ body {
   max-height: 800px;
 }
 
-/* Titre */
-.add-company-form h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
 
 /* Cards d'annonces */
 .card {
@@ -286,9 +281,12 @@ label[for="sort_by"] {
 .search-container {
   background-color: var(--primary-color);
   color: var(--secondary-color);
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 50px;
+  padding: 15px;
+  border-radius: 20px;
+  margin-top: 10px;
+  max-width: 40%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .search-container input[type="text"] {
@@ -315,3 +313,13 @@ label[for="sort_by"] {
   background-color: #689f38;
   color: var(--secondary-color);
 }
+
+.add-annonce-form {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+

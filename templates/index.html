@@ -43,6 +43,9 @@
         </div>
       </div>
       <div class="col">
+  <div class="card h-100">
+    {% if job_ads_count > 0 %}
+      <div class="col">
         <div class="card h-100">
           <a href="{% url 'update_contact_date' pk=latest_job_ad.pk %}">
             <div class="card-body">
@@ -52,19 +55,33 @@
           </a>
         </div>
       </div>
+    {% else %}
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><strong>Pas d'annonces pour le moment</strong></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><em>Aucune annonce enregistrée</em></h6>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
     </div>
   </div>
 
-<div class="container mt-5 search-container">
+<div class="container mt-5">
     <form method="get" action="{% url 'search' %}">
-      <div class="row">
-        <div class="col">
-          <input type="text" class="form-control" name="q" placeholder="Rechercher...">
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="q" placeholder="Rechercher...">
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </div>
         </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary">Rechercher</button>
-        </div>
-      </div>
     </form>
-  </div>
+</div>
+
 {% endblock %}

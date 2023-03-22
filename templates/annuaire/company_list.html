@@ -54,29 +54,29 @@
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Site web:</label>
+                <strong>Site web:</strong>
               <p class="limited-width"><a href="{{ item.company.website }}">{{ item.company.website }}</a></p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Adresse email:</label>
+               <strong>Adresse email:</strong>
               <p>{{ item.company.email_address }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Adresse physique:</label>
+              <strong>Adresse :</strong>
               <p>{{ item.company.physical_address }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Ville:</label>
+              <strong>Ville:</strong>
               <p>{{ item.company.city }}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label">Personne à contacter:</label>
+              <strong>Personne à contacter:</strong>
               <p>{{ item.company.contact_name }}</p>
             </div>
             <div class="mb-3">
-              <label class="form-label">Notes:</label>
+              <strong>Notes:</strong>
               {% if item.notes %}
               <ul>
                 {% for note in item.notes %}
@@ -87,8 +87,8 @@
               <p>Aucune note pour cette entreprise.</p>
               {% endif %}
             </div>
-                        <div class="mb-3">
-                <label class="form-label">Documents :</label>
+            <div class="mb-3">
+                <strong>Documents :</strong>
                 {% if item.documents %}
                     <ul>
                         {% for document in item.documents %}

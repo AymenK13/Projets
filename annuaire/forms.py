@@ -32,10 +32,13 @@ class JobAdForm(forms.ModelForm):
     """
     Formulaire pour ajouter ou modifier une annonce.
     """
+
     class Meta:
         model = JobAd
         fields = ['company', 'job_title', 'job_description', 'job_location', 'job_type', 'job_link']
-
+        widgets = {
+            'job_type': forms.Select(attrs={'class': 'form-select'}),
+        }
     def clean_company(self):
         """
         Vérifie si l'entreprise existe avant de l'associer à une annonce.

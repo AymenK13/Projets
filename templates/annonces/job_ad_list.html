@@ -82,7 +82,7 @@
         <p>{{ annonce.job_description }}</p>
         <p><strong>Lieu:</strong> {{ annonce.job_location }}</p>
         <p><strong>Type:</strong> {{ annonce.job_type }}</p>
-        <p><strong>Site:</strong> {{ annonce.job_site }}</p>
+        <p><strong>Site:</strong> <a href="{{ annonce.job_link }}" target="_blank">{{ annonce.job_link }}</a></p>
         <p><strong>Date d'ajout:</strong> {{ annonce.date_added|date:"d/m/Y" }}</p>
         {% if annonce.contact_date %}
             <p><strong>Contacté le :</strong> {{ annonce.contact_date|date:"d F Y" }}</p>

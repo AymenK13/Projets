@@ -1,10 +1,24 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %}
+
 {% block content %}
-  <h2>Add a New Company</h2>
-  <form method="post" class="add-company-form custom-form">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card add-company-form custom-form">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Ajouter une entreprise</h2>
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="form-group">
+                  {{ field|as_crispy_field }}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary btn-block mt-4">Ajouter</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

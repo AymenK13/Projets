@@ -71,7 +71,7 @@ def home(request):
     job_ads_count = JobAd.objects.count()
     applications_count = JobAd.objects.filter(contact_date__isnull=False).count()
     latest_company = Company.objects.order_by('-created_at').first()
-    latest_job_ad = JobAd.objects.latest('date_added')
+    latest_job_ad = JobAd.objects.latest('date_added') if job_ads_count > 0 else None
 
     context = {
         'companies_count': companies_count,
@@ -193,7 +193,7 @@ def search(request):
 
     companies = Company.objects.filter(
         Q(name__icontains=query) | Q(city__icontains=query)
-    )
+    ).order_by('-created_at')
 
     job_ads = JobAd.objects.filter(
         Q(job_title__icontains=query) | Q(job_description__icontains=query) | Q(job_location__icontains=query)
@@ -205,3 +205,4 @@ def search(request):
         'query': query,
     }
     return render(request, 'search_results.html', context)
+

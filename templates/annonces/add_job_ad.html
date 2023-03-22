@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
-    <!-- Formulaire pour ajouter une annonce -->
-    <h2>Ajouter une annonce</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-    </form>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card add-annonce-form custom-form">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Ajouter une annonce</h2>
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="form-group">
+                  {{ field|as_crispy_field }}
+                </div>
+              {% endfor %}
+              <button type="submit" class="btn btn-primary btn-block mt-4">Ajouter</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
