@@ -206,3 +206,15 @@ def search(request):
     }
     return render(request, 'search_results.html', context)
 
+
+def company_detail(request, pk):
+    company = get_object_or_404(Company, pk=pk)
+    notes = company.notes.all()
+    documents = company.documents.all()
+
+    context = {
+        'company': company,
+        'notes': notes,
+        'documents': documents,
+    }
+    return render(request, 'company_detail.html', context)

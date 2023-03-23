@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from annuaire.views_annuaire import add_company, company_list, home, CompanyDeleteView, edit_company, add_note,     \
-                                    add_document, search
+                                    add_document, search,company_detail
 from annuaire.views_annonces import annonces, add_job_ad, delete_job_ad, update_contact_date, company_job_ads,  \
                                     toggle_favorite, check_company_existence
 
@@ -20,6 +20,8 @@ urlpatterns = [
     path('companies/<int:pk>/edit/', edit_company, name='edit_company'),
     path('companies/<int:company_id>/add_note/', add_note, name='add_note'),
     path('companies/<int:company_id>/add_document/', add_document, name='add_document'),
+    path('company/<int:pk>/', company_detail, name='company_detail'),
+
 
     # Annonces
     path('annonces/', annonces, name='annonces'),
