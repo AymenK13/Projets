@@ -20,7 +20,7 @@ Cette application en Django permet de recenser les offres d'emploi et les entrep
 - Vous pourrez indiquer la date de candidature
 - Ajouter l'annonce à vos favoris
 - Triez les annonces par date d'ajout, ville ou titre du poste.
-- Afficher uniquement les favoris, les candidatures à laquelle vous avez postulé.
+- Afficher uniquement les favoris, les candidatures auxquelles vous avez postulé.
 
 ### Annuaire
 
