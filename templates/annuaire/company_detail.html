@@ -53,7 +53,7 @@
             <a href="{% url 'company_job_ads' company_id=company.pk %}" class="btn btn-primary">Voir les {{ company.job_ads.count }} offres d'emploi</a>
             <a href="{% url 'add_job_ad' %}?company={{ company.pk }}" class="btn btn-primary">Ajouter une annonce d'emploi</a>
             <a href="{% url 'edit_company' pk=company.pk %}" class="btn btn-warning">Modifier</a>
-            <a href="{% url 'delete_job_ad' pk=company.pk %}" class="btn btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise? Cette action ne peut pas être annulée.')) { window.location.href = '{% url 'delete_job_ad' pk=company.id %}'; }">Supprimer</a>
+            <a href="{% url 'company_delete' pk=company.pk %}" class="btn btn-danger" onclick="if (confirm('Voulez-vous vraiment supprimer cette entreprise? Cette action ne peut pas être annulée.')) { window.location.href = '{% url 'company_delete' pk=company.pk %}'; }">Supprimer</a>
           </div>
         </div>
       </div>
