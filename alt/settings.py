@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-fs^--%=busyb0$*gleuypw^tlvzu%br9j5*y^t55z_$y6gq)s+
 DEBUG = True
 
 #If you want to deploy, you will need to put the domain name in the allowed host here
-ALLOWED_HOSTS = ["djangojobboard.azurewebsites.net"]
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 

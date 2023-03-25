@@ -35,7 +35,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    # Ajout des fichiers static en mode DEBUG
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
