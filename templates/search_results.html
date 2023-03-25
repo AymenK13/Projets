@@ -16,7 +16,7 @@
             <ul>
               {% for company in companies %}
                 <li>
-                  <h3><a href="#">{{ company.name }}</a></h3>
+                  <h3><a href="{% url 'company_detail' company.pk %}">{{ company.name }}</a></h3>
                   <p>{{ company.city }}</p>
                   {% if company.job_ads.all %}
                     <h4>Offres d'emploi :</h4>
