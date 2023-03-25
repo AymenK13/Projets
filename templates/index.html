@@ -2,86 +2,63 @@
 {% load static %}
 
 {% block content %}
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
-      <div class="col">
-        <div class="card h-100">
-          <a href="{% url 'company_list' %}">
-            <div class="card-body">
-              <h5 class="card-title"><strong>{{ companies_count }}</strong></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><em>Entreprises enregistrées</em></h6>
-            </div>
-          </a>
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 g-4 mx-auto">
+    <div class="col">
+      <div class="card h-100">
+        <a href="{% url 'company_list' %}" class="no-underline">
+          <h5 class="card-title">{{ companies_count }}</h5>
+        </a>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted"><em>Entreprises enregistrées</em></h6>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <a href="{% url 'annonces' %}">
-            <div class="card-body">
-              <h5 class="card-title"><strong>{{ job_ads_count }}</strong></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><em>Annonces enregistrées</em></h6>
-            </div>
-          </a>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <a href="{% url 'annonces' %}" class="no-underline">
+          <h5 class="card-title">{{ job_ads_count }}</h5>
+        </a>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted"><em>Annonces enregistrées</em></h6>
         </div>
       </div>
-      <div class="col">
-        <div class="card h-100">
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><strong>{{ applications_count }}</strong></h5>
+          <h6 class="card-subtitle mb-2 text-muted"><em>Candidatures envoyées</em></h6>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <a href="{% url 'company_detail' pk=latest_company.pk %}" class="no-underline">
+          <h5 class="card-title">{{ latest_company.name }}</h5>
+        </a>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted"><em>Dernière entreprise ajoutée</em></h6>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        {% if job_ads_count > 0 %}
+        <a href="{% url 'update_contact_date' pk=latest_job_ad.pk %}" class="no-underline">
           <div class="card-body">
-            <h5 class="card-title"><strong>{{ applications_count }}</strong></h5>
-            <h6 class="card-subtitle mb-2 text-muted"><em>Candidatures envoyées</em></h6>
+            <h5 class="card-title"><strong>{{ latest_job_ad.job_title }}</strong></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><em>Dernière annonce ajoutée</em></h6>
           </div>
+        </a>
+        {% else %}
+        <div class="card-body">
+          <h5 class="card-title"><strong>Pas d'annonces pour le moment</strong></h5>
+          <h6 class="card-subtitle mb-2 text-muted"><em>Aucune annonce enregistrée</em></h6>
         </div>
+        {% endif %}
       </div>
-      <div class="col">
-        <div class="card h-100">
-          <a href="{% url 'edit_company' pk=latest_company.pk %}">
-            <div class="card-body">
-              <h5 class="card-title"><strong>{{ latest_company.name }}</strong></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><em>Dernière entreprise ajoutée</em></h6>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col">
-  <div class="card h-100">
-    {% if job_ads_count > 0 %}
-      <div class="col">
-        <div class="card h-100">
-          <a href="{% url 'update_contact_date' pk=latest_job_ad.pk %}">
-            <div class="card-body">
-              <h5 class="card-title"><strong>{{ latest_job_ad.job_title }}</strong></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><em>Dernière annonce ajoutée</em></h6>
-            </div>
-          </a>
-        </div>
-      </div>
-    {% else %}
-      <div class="col">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title"><strong>Pas d'annonces pour le moment</strong></h5>
-            <h6 class="card-subtitle mb-2 text-muted"><em>Aucune annonce enregistrée</em></h6>
-          </div>
-        </div>
-      </div>
-    {% endif %}
-
-  </div>
-</div>
     </div>
   </div>
-
-<div class="container mt-5">
-    <form method="get" action="{% url 'search' %}">
-        <div class="row">
-            <div class="col">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="q" placeholder="Rechercher...">
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
-                </div>
-            </div>
-        </div>
-    </form>
 </div>
-
 {% endblock %}
