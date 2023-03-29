@@ -6,7 +6,7 @@ Cette application en Django permet de recenser les offres d'emploi et les entrep
 
 - Clonez ce repository : `git clone https://github.com/AymenK13/Projets.git`
 - Accédez au dossier du projet
-- Créez un environnement virtuel : `python3 -m venv myenv` (remplacez `myenv` par le nom de votre choix)
+- Créez un environnement virtuel : `python -m venv myenv` (remplacez `myenv` par le nom de votre choix)
 - Activez l'environnement virtuel : `source myenv/bin/activate` pour Linux/MacOS ou `myenv\Scripts\activate` pour Windows
 - Installez les dépendances du projet : `pip install -r requirements.txt`
 - Créez la base de données : `python manage.py migrate`
