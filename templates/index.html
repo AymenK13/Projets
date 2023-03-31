@@ -33,6 +33,7 @@
       </div>
     </div>
     <div class="col">
+      {% if latest_company %}
       <div class="card h-100">
         <a href="{% url 'company_detail' pk=latest_company.pk %}" class="no-underline">
           <h5 class="card-title">{{ latest_company.name }}</h5>
@@ -41,10 +42,11 @@
           <h6 class="card-subtitle mb-2 text-muted"><em>Dernière entreprise ajoutée</em></h6>
         </div>
       </div>
+      {% endif %}
     </div>
     <div class="col">
       <div class="card h-100">
-        {% if job_ads_count > 0 %}
+        {% if latest_job_ad %}
         <a href="{% url 'update_contact_date' pk=latest_job_ad.pk %}" class="no-underline">
           <div class="card-body">
             <h5 class="card-title"><strong>{{ latest_job_ad.job_title }}</strong></h5>
@@ -62,3 +64,4 @@
   </div>
 </div>
 {% endblock %}
+
