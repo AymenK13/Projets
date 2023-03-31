@@ -208,9 +208,12 @@ def search(request):
 
 
 def company_detail(request, pk):
-    company = get_object_or_404(Company, pk=pk)
-    notes = company.notes.all()
-    documents = company.documents.all()
+    try:
+        company = Company.objects.get(pk=pk)
+    except Company.DoesNotExist:
+        company = None
+    notes = company.notes.all() if company else None
+    documents = company.documents.all() if company else None
 
     context = {
         'company': company,
